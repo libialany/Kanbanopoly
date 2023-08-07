@@ -39,6 +39,7 @@ function Index() {
           <Grid item xs={3} xl={4} paddingTop={1}>
             <Typography variant="inherit">Kanbanopoly</Typography>
           </Grid>
+
           <Grid
             item
             xs={3}
