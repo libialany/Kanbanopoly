@@ -1,0 +1,1 @@
+export type task = { id: string; name: string; status: string, user_id: string };

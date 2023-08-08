@@ -13,7 +13,6 @@ export class TasksService {
     const data = await this.prismaService.$transaction(async (prismaCtx) => {
       const taskCreated = await prismaCtx.task.create({
         data: {
-          updatedAt: new Date(),
           user_id: +createTask.user_id,
           status: createTask.status,
           name: createTask.name,
@@ -29,19 +28,18 @@ export class TasksService {
     return data;
   }
 
-  async getTasks() {
-    const tasks = await this.repository.getTasks({});
+  async getTasks(status: string) {
+    const tasks = await this.repository.getTasks(status);
     return tasks;
   }
-  
+
   async updateTasks(updateTask: UpdateTaskDto, idTask: string) {
     const data = await this.prismaService.$transaction(async (prismaCtx) => {
       const taskUpdated = await prismaCtx.task.update({
-        where:{
-          id: idTask
+        where: {
+          id: idTask,
         },
         data: {
-          updatedAt: new Date(),
           status: updateTask.status,
         },
       });

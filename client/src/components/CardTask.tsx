@@ -18,8 +18,9 @@ function CardTask({ task }: Props) {
       style={{
         opacity,
         padding: "8px",
-        borderRadius: "4px",
-        backgroundColor: "#007bff",
+        borderRadius: "14px",
+        margin:'5px',
+        backgroundColor: "#F4D160",
         color: "#fff",
         cursor: "move",
       }}

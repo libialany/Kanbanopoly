@@ -16,21 +16,17 @@ interface Props {
 function Form({ taskStatus, taskName, setTaskName, setTaskStatus }: Props) {
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} sm={6} md={6}>
         <TextField
-          sx={{
-            typography: "inherit",
-          }}
           label="Task"
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
-          variant="outlined"
           margin="normal"
-          size="small"
+          size="small"      
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl fullWidth variant="outlined" margin="normal">
+      <Grid item xs={12} sm={6} md={6}>
+        <FormControl fullWidth variant="outlined" size="small" margin="normal">
           <InputLabel>Status</InputLabel>
           <Select
             size="small"
@@ -38,9 +34,8 @@ function Form({ taskStatus, taskName, setTaskName, setTaskStatus }: Props) {
             value={taskStatus}
             onChange={(e) => setTaskStatus(e.target.value)}
           >
-            <MenuItem value="todo">Todo</MenuItem>
-            <MenuItem value="inProgress">In Progress</MenuItem>
-            <MenuItem value="done">Done</MenuItem>
+            <MenuItem value="Pending">Pendding</MenuItem>
+            <MenuItem value="Done">Done</MenuItem>
           </Select>
         </FormControl>
       </Grid>

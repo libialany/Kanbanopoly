@@ -3,17 +3,13 @@ import { Grid, Typography, Box } from "@mui/material";
 import AddTask from "./AddTask";
 import ButtonStyled from "./ButtonStyled";
 import CardStyles from "./CardStyles";
-type task = { id: string; name: string; status: string };
-function Index() {
-  const initialtasks = [
-    { id: "1", name: "s", status: "pendding" },
-    { id: "12", name: "s", status: "done" },
-  ];
+import axios from "axios";
+import { BASE_URL } from "../common";
+import { task } from "../types";
 
-  const [tasks, setTasks] = useState<task[]>(initialtasks)
-  const setNewTask = (taskList:task[])=>{
-    setTasks(taskList)
-  }
+function Index() {
+  const [tasksDone, setTasksDone] = useState<task[]>([]);
+  const [tasksPendding, setTasksPendding] = useState<task[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,11 +17,27 @@ function Index() {
   const handleClose = () => {
     setOpen(false);
   };
-  useEffect(()=>{
-  },[tasks])
+
+  const loadData = async () => {
+    try {
+      let res = await axios.get(`${BASE_URL}/tasks/done`);
+      setTasksDone(res.data);
+      res  = await axios.get(`${BASE_URL}/tasks/pendding`);
+      setTasksPendding(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
+  useEffect(() => {
+    
+  }, [tasksDone,tasksPendding]);
+  
   return (
     <Box>
-      <AddTask handleClose={handleClose} open={open} />
+      <AddTask handleClose={handleClose} open={open} loadData={loadData}/>
       <Box>
         <Grid
           sx={{
@@ -59,14 +71,20 @@ function Index() {
         padding={2}
       >
         <Grid item xs={6} sx={{ display: "flex", flexDirection: "column" }}>
-          <CardStyles 
-          name={"In progress"}
-          tasks={tasks} setTask={setNewTask} status={"pendding"} />
+          <CardStyles
+            name={"In progress"}
+            tasks={tasksPendding}
+            status={"Pending"}
+            loadData={loadData}
+          />
         </Grid>
         <Grid item xs={6} sx={{ display: "flex", flexDirection: "column" }}>
           <CardStyles
-           name={"Done"}
-           tasks={tasks} setTask={setNewTask} status={"done"} />
+            name={"Done"}
+            tasks={tasksDone}
+            status={"Done"}
+            loadData={loadData}
+          />
         </Grid>
       </Grid>
     </Box>

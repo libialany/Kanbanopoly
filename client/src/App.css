@@ -4,7 +4,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  font-family: 'Borel';font-size: 22px;
+  font-family: 'Borel';
+  background-color: '#FBEEAC';
 }
 
 p{

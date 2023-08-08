@@ -3,27 +3,35 @@ import { Card, CardContent, Typography } from "@mui/material";
 
 import { useDrop } from "react-dnd";
 import CardTask from "./CardTask";
-
-type task = { id: string; name: string; status: string };
+import { task } from "../types";
+import axios from "axios";
+import { BASE_URL, config } from "../common";
 interface Props {
   tasks: task[];
-  setTask: (list: task[]) => void;
   status: string;
   name: string;
+  loadData: () => void;
 }
 type itemType = {
   id: string;
 };
-function CardStyles({ status, setTask, tasks, name }: Props) {
+function CardStyles({ status, tasks, name, loadData }: Props) {
+  const changeStatus = async (id: string) => {
+    try {
+      const body = JSON.stringify({
+        status: status,
+      });
+      await axios.patch(`${BASE_URL}/${id}/task`, body, config);
+      loadData()
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const [{ isOver }, drop] = useDrop({
     accept: "task",
     drop: (item: itemType) => {
       const { id } = item;
-      console.log("Item dropped!", id, tasks);
-      const newTask = tasks.filter((item) => item.id === id)[0];
-      newTask.status = "done";
-      const prevList = tasks.filter((item) => item.id !== id);
-      setTask([...prevList, newTask]);
+      changeStatus(id);
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -32,7 +40,7 @@ function CardStyles({ status, setTask, tasks, name }: Props) {
   const backgroundColor = isOver ? "#f0f0f0" : "#007fff";
   const taskList = tasks.filter((item) => item.status === status);
   return (
-    <Card ref={drop} sx={{ background: backgroundColor, height: "100%" }}>
+    <Card ref={drop} sx={{ background: backgroundColor, height: "100%", borderRadius: '20px' }}>
       <CardContent>
         <Typography variant="h5" sx={{ fontFamily: "inherit" }}>
           {name}

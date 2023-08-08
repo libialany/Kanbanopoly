@@ -12,9 +12,14 @@ export class ApiController {
     return this.tasksService.createTask(data);
   }
 
-  @Get('tasks')
-  getTasks() {
-    return this.tasksService.getTasks();
+  @Get('tasks/done')
+  getTasksDone() {
+    return this.tasksService.getTasks('Done');
+  }
+
+  @Get('tasks/pendding')
+  getTasksPendding() {
+    return this.tasksService.getTasks('Pending');
   }
 
   @Patch(':id/task')

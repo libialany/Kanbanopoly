@@ -11,20 +11,11 @@ export class TasksRepository {
     return this.prisma.task.create({ data });
   }
 
-  async getTasks(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.TaskWhereUniqueInput;
-    where?: Prisma.TaskWhereInput;
-    orderBy?: Prisma.TaskOrderByWithRelationInput;
-  }): Promise<Task[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+  async getTasks(status: string): Promise<Task[]> {
     return this.prisma.task.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
+      where: {
+        status,
+      },
     });
   }
   async updateTask(params: {
